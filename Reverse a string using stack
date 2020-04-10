@@ -1,0 +1,52 @@
+/* Write a C program to reverse a string using stack. */
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <limits.h>
+struct Stack
+{
+	int top;
+	unsigned cap;
+	char* a;
+};
+struct Stack* create_Stack(unsigned cap)
+{
+	struct Stack* stack = (struct Stack*) malloc(sizeof(struct Stack));
+	stack->cap = cap;
+	stack->top = -1;
+	stack->a = (char*) malloc(stack->cap * sizeof(char));
+	return stack;
+}
+int isFull(struct Stack* stack)
+{ return stack->top == stack->cap - 1; }
+int isEmpty(struct Stack* stack)
+{ return stack->top == -1; }
+void push(struct Stack* stack, char item)
+{
+	if (isFull(stack))
+		return;
+	stack->a[++stack->top] = item;
+}
+char pop(struct Stack* stack)
+{
+	if (isEmpty(stack))
+		return INT_MIN;
+	return stack->a[stack->top--];
+}
+void reverse(char str[])
+{
+	int n = strlen(str);
+	struct Stack* stack = create_Stack(n);
+	int i;
+	for (i = 0; i < n; i++)
+		push(stack, str[i]);
+	for (i = 0; i < n; i++)
+		str[i] = pop(stack);
+}
+int main()
+{
+	char str[] = "RohanBhaskar";
+	reverse(str);
+	printf("Reversed string is %s",str);
+	return 0;
+}
